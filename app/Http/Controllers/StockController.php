@@ -14,16 +14,21 @@ use Illuminate\Support\Facades\Http;
 
 class StockController extends Controller
 {
+    public function __construct()
+    {
+        $this->apiKey = env('BENZINGA_API_KEY');
+        $this->apiUrl = env('BENZINGA_API_URL');
+    }
+
     private function getQuote($symbol)
     {
-        $apiKey = env('BENZINGA_API_KEY');echo"<br>";
-        $url = "https://api.benzinga.com/api/v2/quoteDelayed?token={$apiKey}";
+        $url = "{$this->apiUrl}/api/v2/quoteDelayed?token={$this->apiKey}&symbols={$symbol}";
         $response = Http::get($url);
         if ($response->failed()) return null;
         $data = $response->json();
         // benzinga returns 'quote' array
-        if (empty($data['quote'][0])) return null;
-        return $data['quote'][0];
+        if (empty($data[$symbol])) return null;
+        return $data[$symbol];
     }
 
     public function quote($symbol)
@@ -44,7 +49,7 @@ class StockController extends Controller
 
         $userId = Auth::id();
         $quote = $this->getQuote($request->symbol);
-
+        //echo "<pre>";print_r($quote);die;
         if (!$quote) return back()->with('error', 'Invalid symbol.');
 
         $ask = $quote['askPrice'] ?? null;
