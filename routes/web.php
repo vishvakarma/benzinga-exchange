@@ -30,6 +30,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/buy', [StockController::class, 'buy'])->name('stock.buy');
     Route::post('/sell', [StockController::class, 'sell'])->name('stock.sell');
     Route::get('/quote/{symbol}', [StockController::class, 'quote'])->name('stock.quote');
+
+    Route::get('/transactions', [PortfolioController::class, 'getTransactions'])->name('transactions');
+    
 });
 
 

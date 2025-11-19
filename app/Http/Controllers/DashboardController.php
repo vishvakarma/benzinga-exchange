@@ -46,9 +46,10 @@ class DashboardController extends Controller
         $totalValue = $balance;
         $initialCash = 100000;
         $totalProfitLoss = $totalValue - $initialCash;
+    
         return view('dashboard.index', [
             'cashBalance' => $balance,
-            'holdings' => $enrichedHoldings,
+            'holdings' => $portfolio,
             'totalValue' => $totalValue,
             'totalProfitLoss' => $totalProfitLoss,
             'totalProfitLossPct' => ($totalProfitLoss / $initialCash) * 100,

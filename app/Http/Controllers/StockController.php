@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\Portfolio;
+use App\Models\Transaction;
 use App\Models\UserBalance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -72,6 +73,16 @@ class StockController extends Controller
         $balance->cash -= $total;
         $balance->save();
 
+        // Record transaction
+        Transaction::create([
+            'user_id' => $userId,
+            'symbol' => $request->symbol,
+            'type' => 'buy',
+            'quantity' => $request->quantity,
+            'price' => $ask,
+            'total_amount' => $total,
+        ]);
+
         return back()->with('success', 'Stock purchased successfully.');
     }
 
@@ -103,6 +114,18 @@ class StockController extends Controller
         $balance = UserBalance::firstOrCreate(['user_id' => $userId], ['cash' => 100000]);
         $balance->cash += $total;
         $balance->save();
+
+        $transaction = Transaction::firstOrNew(['user_id' => $userId, 'symbol' => strtoupper($request->symbol)]);
+
+        // Record transaction
+        Transaction::create([
+            'user_id' => $userId,
+            'symbol' => $symbol,
+            'type' => 'sell',
+            'quantity' => $request->quantity,
+            'price' => $bid,
+            'total_amount' => $total,
+        ]);
 
         return back()->with('success', 'Stock sold successfully.');
     }
