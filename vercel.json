@@ -1,9 +1,16 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "Dockerfile", "use": "@vercel/docker" }
-  ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/" }
-  ]
+    "version": 2,
+    "functions": {
+    "api/**/*.php": {
+        "runtime": "vercel-php@latest"
+    }
+    },
+    "build": {
+    "env": {
+        "NODE_VERSION": "20.x"
+    }
+    },
+    "engines": {
+    "node": "20.x"
+    }
 }
