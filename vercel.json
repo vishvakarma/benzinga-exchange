@@ -1,19 +1,9 @@
 {
-    "functions": {
-    "api/index.php": {
-        "runtime": "vercel-php@0.6.0" 
-    }
-    },
-    "build": {
-    "env": {
-        "APP_ENV": "production",
-        "APP_DEBUG": "false"
-    }
-    },
-    "routes": [
-    {
-        "src": "/(.*)",
-        "dest": "api/index.php"
-    }
-    ]
+  "version": 2,
+  "builds": [
+    { "src": "Dockerfile", "use": "@vercel/docker" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/" }
+  ]
 }
