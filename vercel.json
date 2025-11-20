@@ -1,9 +1,13 @@
 {
     "version": 2,
       "framework": null,
+
     "functions": {
-        "api/index.php": { "runtime": "vercel-php" }
+        "api/**/*.js": { 
+            "runtime": "node@20.x" 
+        }
     },
+    
     "routes": [{
         "src": "/(.*)",
         "dest": "/api/index.php"
